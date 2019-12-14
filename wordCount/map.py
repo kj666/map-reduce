@@ -23,3 +23,8 @@ results = wordCount.map_reduce(mapf, reducef, "out")
 
 for result in results.find():
     print (result['_id'] , result['value']['count'])
+
+n= 0
+
+while True:
+    n+1

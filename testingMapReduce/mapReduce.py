@@ -25,14 +25,13 @@ col = mydb["MapRedData"]
 # uploadData('NDBench-testing.csv', 'Final_Target')
 # print('Upload Completed Successfully')
 
-
 mapf = Code(open('mapFinal.js', 'r').read())
 reduceMin = Code(open('reduceMin.js', 'r').read())
 reduceMax = Code(open('reduceMax.js', 'r').read())
 
 out = mydb["out"]
-results = col.map_reduce(mapf, reduceMin,'out')
-results = col.map_reduce(mapf, reduceMax, 'out')
 
-for result in results.find():
-    print(result['_id'])
+minValue = col.map_reduce(mapf, reduceMin,'out')
+print('Min: ' + str(minValue.find()[0]['value']))
+maxValue = col.map_reduce(mapf, reduceMax, 'out')
+print('Max: ' + str(maxValue.find()[0]['value']))
