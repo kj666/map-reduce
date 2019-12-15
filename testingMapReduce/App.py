@@ -36,20 +36,14 @@ while(True):
     datatype_in = input()
     if(datatype_in == '1' or datatype_in == '2' or datatype_in == '3'):
         break
+    
+if(datatype_in == '1'):
+    uploadData('NDBench-training.csv', col)
+elif(datatype_in == '2'):
+    uploadData('NDBench-testing.csv', col)
+elif(datatype_in == '3'):
+    uploadData('test.csv', col)
 
-# upload csv file to mongodb
-while(True):
-    print('Upload .CSV file to MongoDB (y\\n)')
-    upload_in = input()
-    if(upload_in =='y' or upload_in =='n'):
-        if(upload_in == 'y'):
-            if(datatype_in == '1'):
-                uploadData('NDBench-training.csv', col)
-            elif(datatype_in == '2'):
-                uploadData('NDBench-testing.csv', col)
-            elif(datatype_in == '3'):
-                uploadData('test.csv', col)
-        break
 
 # select attribute
 while(True):
