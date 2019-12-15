@@ -1,7 +1,16 @@
 function reduceMedian(key, values){
-    var min = values[0];
-    values.forEach(function(val){
-        if(val < min) min = val;
+    if(values.length == 0 ){
+        return 0;
+    }
+
+    values.sort(function(val1, val2){
+        return val1 - val2;
     });
-    return values[0];
+
+    var middle = Math.floor(values.length/2);
+
+    if(values.length % 2 === 0){
+        return values[middle];
+    }
+    return (values[middle -1 ] + values[middle]) / 2.0;
 }
