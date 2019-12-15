@@ -8,6 +8,7 @@ import csv
 
 def uploadData(dataset, attribute):
     input_file = csv.DictReader(open(dataset))
+    line = 0
     for row in input_file:
         # print(row[attribute])S
         col.insert_one(row)
@@ -25,9 +26,10 @@ col = mydb["MapRedData"]
 # uploadData('NDBench-testing.csv', 'Final_Target')
 # print('Upload Completed Successfully')
 
-mapf = Code(open('mapFinal.js', 'r').read())
+mapf = Code(open('mapCPU.js', 'r').read())
 reduceMin = Code(open('reduceMin.js', 'r').read())
 reduceMax = Code(open('reduceMax.js', 'r').read())
+reduceMedian = Code(open('reduceMedian.js', 'r').read())
 
 out = mydb["out"]
 
@@ -35,3 +37,6 @@ minValue = col.map_reduce(mapf, reduceMin,'out')
 print('Min: ' + str(minValue.find()[0]['value']))
 maxValue = col.map_reduce(mapf, reduceMax, 'out')
 print('Max: ' + str(maxValue.find()[0]['value']))
+
+medianValue = col.map_reduce(mapf, reduceMedian, 'out')
+print('Median: ' + str(maxValue.find()[0]['value']))
