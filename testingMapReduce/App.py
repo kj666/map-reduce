@@ -66,12 +66,12 @@ elif(attribute_in == '4'):
     mapf = Code(open('mapMemory.js', 'r').read())
 
 
-
 reduceMin = Code(open('reduceMin.js', 'r').read())
 reduceMax = Code(open('reduceMax.js', 'r').read())
 reduceMedian = Code(open('reduceMedian.js', 'r').read())
 reduceAverage = Code(open('reduceAverage.js', 'r').read())
 reduceStandard = Code(open('reduceStat.js', 'r').read())
+reduceNormalize =  Code(open('reduceNorm.js', 'r').read())
 finalizeStandard = Code(open('finalizeStandardDeviation.js', 'r').read())
 
 out = mydb["out"]
@@ -91,3 +91,13 @@ print('Average: ' + str(avgValue.find()[0]['value']))
 
 stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
 print('Standard Deviation: ' + str(stantardValue.find()[0]['value']))
+
+
+while(True):
+    print('Do you want to normalize the data (y\\n)')
+    norm_in = input()
+    if(norm_in =='y' or norm_in =='n'):
+        if(norm_in =='y'):
+            normValue = col.map_reduce(mapf, reduceNormalize, 'out')
+            print('Normalized Values: ' + str(normValue.find()[0]['value']))
+        break
