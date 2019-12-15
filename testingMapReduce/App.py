@@ -11,6 +11,7 @@ def uploadData(dataset, collection):
     collection.drop()
     input_file = csv.DictReader(open(dataset))
     line = 0
+    collect = []
     for row in input_file:
         inline = {
             'CPUUtilization_Average': int(row['CPUUtilization_Average']),
@@ -19,7 +20,8 @@ def uploadData(dataset, collection):
             'MemoryUtilization_Average' : float(row['MemoryUtilization_Average']),
             'Final_Target' : float(row['Final_Target'])
         }
-        col.insert_one(row)
+        collect.append(row)
+    col.insert_many(collect)
     print('Upload Completed Successfully')
 
 

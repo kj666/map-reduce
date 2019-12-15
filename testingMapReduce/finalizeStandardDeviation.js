@@ -5,5 +5,7 @@ function finalize(key, value) {
 	delete value.diff;
 	delete value.sum;
 	delete value.count;
+	delete value.min;
+	delete value.max;
 	return value;
 }
