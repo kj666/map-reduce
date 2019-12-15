@@ -1,3 +1,4 @@
 function mapCPU(){
-    emit('CPUUtilization_Average', this.CPUUtilization_Average);
+    
+    emit('CPUUtilization_Average', parseInt(this.CPUUtilization_Average));
 }

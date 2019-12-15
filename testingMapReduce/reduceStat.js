@@ -1,7 +1,8 @@
 function reduceStat(key, values){
-    var a = { sum: values[0], count:1, diff: 0};
-           
-    for (var i = 1 ; i < values.length; i++){
+
+    var a = { sum: values[1], count:1, diff: 0};
+    
+    for (var i = 2 ; i < values.length; i++){
         var val = { 
             sum: values[i], 
             count:1, 

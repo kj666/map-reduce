@@ -19,7 +19,7 @@ def uploadData(dataset, collection):
             'MemoryUtilization_Average' : float(row['MemoryUtilization_Average']),
             'Final_Target' : float(row['Final_Target'])
         }
-        col.insert_one(inline)
+        col.insert_one(row)
     print('Upload Completed Successfully')
 
 
