@@ -4,6 +4,7 @@ from bson.code import Code
 from bson.son import SON
 import os
 import csv
+from datetime import datetime
 
 # Function to parse data
 def uploadData(dataset, collection):
@@ -72,22 +73,31 @@ finalizeStandard = Code(open('finalizeStandardDeviation.js', 'r').read())
 
 out = mydb["out"]
 
-
+minTimeI = datetime.now()
 minValue = col.map_reduce(mapf, reduceMin,'out')
-print('Min: ' + str(minValue.find()[0]['value']))
+minTimeF = datetime.now()
 
+print('Time Elapsed : '+ str(minTimeF -minTimeI) +'\t\tMin: ' + str(minValue.find()[0]['value']))
+
+maxTimeI = datetime.now()
 maxValue = col.map_reduce(mapf, reduceMax, 'out')
-print('Max: ' + str(maxValue.find()[0]['value']))
+maxTimeF = datetime.now()
+print('Time Elapsed : '+ str(maxTimeF -maxTimeI) + '\t\tMax: ' + str(maxValue.find()[0]['value']))
 
+medianTimeI = datetime.now()
 medianValue = col.map_reduce(mapf, reduceMedian, 'out')
-print('Median: ' + str(medianValue.find()[0]['value']))
+medianTimeF = datetime.now()
+print('Time Elapsed : '+ str(medianTimeF -medianTimeI)+'\t\tMedian: ' + str(medianValue.find()[0]['value']))
 
+avgTimeI = datetime.now()
 avgValue = col.map_reduce(mapf, reduceAverage, 'out')
-print('Average: ' + str(avgValue.find()[0]['value']))
+avgTimeF = datetime.now()
+print('Time Elapsed : '+ str(avgTimeF -avgTimeI)+'\t\tAverage: ' + str(avgValue.find()[0]['value']))
 
+stdDevTimeI = datetime.now()
 stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
-print('Standard Deviation: ' + str(stantardValue.find()[0]['value']))
-
+stdDevTimeF = datetime.now()
+print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
 
 while(True):
     print('Do you want to normalize the data (y\\n)')
