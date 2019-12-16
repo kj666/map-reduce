@@ -70,6 +70,7 @@ reduceMedian = Code(open('reduceMedian.js', 'r').read())
 reduceAverage = Code(open('reduceAverage.js', 'r').read())
 reduceStandard = Code(open('reduceStat.js', 'r').read())
 reduceNormalize =  Code(open('reduceNorm.js', 'r').read())
+reducePercentile = Code(open('reducePercentile.js', 'r').read())
 finalizeStandard = Code(open('finalizeStandardDeviation.js', 'r').read())
 
 out = mydb["out"]
@@ -99,6 +100,11 @@ stdDevTimeI = datetime.now()
 stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
 stdDevTimeF = datetime.now()
 print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
+
+perTimeI = datetime.now()
+percentileValue = col.map_reduce(mapf, reducePercentile, 'out')
+perTimeF = datetime.now()
+print('Time Elapsed : '+ str(perTimeF -perTimeI)+'\t\t90Th percentile: ' + str(percentileValue.find()[0]['value']))
 
 
 while(True):
