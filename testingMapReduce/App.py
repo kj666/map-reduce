@@ -63,6 +63,12 @@ elif(attribute_in == '3'):
 elif(attribute_in == '4'):
     mapf = Code(open('mapMemory.js', 'r').read())
 
+def mapRedu(reduceFunc, outputStr):
+    TimeI = datetime.now()
+    Value = col.map_reduce(mapf, reduceFunc,'out')
+    TimeF = datetime.now()
+    print('Time Elapsed : '+ str(TimeF -TimeI) +'\t\t'+outputStr+': ' + str(Value.find()[0]['value']))
+
 
 reduceMin = Code(open('reduceMin.js', 'r').read())
 reduceMax = Code(open('reduceMax.js', 'r').read())
@@ -75,37 +81,17 @@ finalizeStandard = Code(open('finalizeStandardDeviation.js', 'r').read())
 
 out = mydb["out"]
 
-minTimeI = datetime.now()
-minValue = col.map_reduce(mapf, reduceMin,'out')
-minTimeF = datetime.now()
-
-print('Time Elapsed : '+ str(minTimeF -minTimeI) +'\t\tMin: ' + str(minValue.find()[0]['value']))
-
-maxTimeI = datetime.now()
-maxValue = col.map_reduce(mapf, reduceMax, 'out')
-maxTimeF = datetime.now()
-print('Time Elapsed : '+ str(maxTimeF -maxTimeI) + '\t\tMax: ' + str(maxValue.find()[0]['value']))
-
-medianTimeI = datetime.now()
-medianValue = col.map_reduce(mapf, reduceMedian, 'out')
-medianTimeF = datetime.now()
-print('Time Elapsed : '+ str(medianTimeF -medianTimeI)+'\t\tMedian: ' + str(medianValue.find()[0]['value']))
-
-avgTimeI = datetime.now()
-avgValue = col.map_reduce(mapf, reduceAverage, 'out')
-avgTimeF = datetime.now()
-print('Time Elapsed : '+ str(avgTimeF -avgTimeI)+'\t\tAverage: ' + str(avgValue.find()[0]['value']))
+mapRedu(reduceMin,'Min')
+mapRedu(reduceMax,'Max')
+mapRedu(reduceMedian,'Median')
+mapRedu(reduceAverage,'Average')
 
 stdDevTimeI = datetime.now()
 stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
 stdDevTimeF = datetime.now()
 print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
 
-perTimeI = datetime.now()
-percentileValue = col.map_reduce(mapf, reducePercentile, 'out')
-perTimeF = datetime.now()
-print('Time Elapsed : '+ str(perTimeF -perTimeI)+'\t\t90Th percentile: ' + str(percentileValue.find()[0]['value']))
-
+mapRedu(reducePercentile,'90th percentile')
 
 while(True):
     print('Do you want to normalize the data (y\\n)')
