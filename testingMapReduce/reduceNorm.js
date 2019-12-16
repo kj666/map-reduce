@@ -1,10 +1,20 @@
 function reduceNormalize(key, values){
+    
+    var max = 0;
+    var min = 0;
+    values.forEach(function(val){
+        if(val > max) max = val;
+    });
+
+    values.forEach(function(val){
+        if(val > max) min = val;
+    });
+
     var norm = [];
+
     values.forEach(function(val){
         if(val != NaN){
-        var max = 100;
-        var min = 0;
-      
+        
         var normalized = (val-min)/(max-min);
         norm.push(normalized);
         }
