@@ -1,3 +1,3 @@
 function mapFinal(){
-    emit('Final_Target', this.Final_Target);
+    emit('Final_Target', parseFloat(this.Final_Target));
 }

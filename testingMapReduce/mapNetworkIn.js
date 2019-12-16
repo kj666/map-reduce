@@ -1,3 +1,3 @@
 function mapNetworkIn(){
-    emit('NetworkIn_Average', this.NetworkIn_Average);
+    emit('NetworkIn_Average', parseInt(this.NetworkIn_Average));
 }

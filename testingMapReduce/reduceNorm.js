@@ -6,11 +6,11 @@ function reduceNormalize(key, values){
         var min = 0;
       
         var normalized = (val-min)/(max-min);
-        norm.push(val.length);
+        norm.push(normalized);
         }
         else{
             norm.push(-1);
         }
     });
-    return {values};
+    return {norm};
 }

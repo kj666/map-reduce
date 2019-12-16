@@ -1,3 +1,3 @@
 function mapNetworkOut(){
-    emit('NetworkOut_Average', this.NetworkOut_Average);
+    emit('NetworkOut_Average', parseInt(this.NetworkOut_Average));
 }

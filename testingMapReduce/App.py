@@ -26,6 +26,7 @@ def uploadData(dataset, collection):
     print('Upload Completed Successfully')
 
 
+
 # myclient = pymongo.MongoClient("mongodb://76.67.179.162:27017/")
 myclient = pymongo.MongoClient("mongodb://192.168.2.14:27017/")
 mydb = myclient["hadoop"]
@@ -98,6 +99,7 @@ stdDevTimeI = datetime.now()
 stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
 stdDevTimeF = datetime.now()
 print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
+
 
 while(True):
     print('Do you want to normalize the data (y\\n)')
