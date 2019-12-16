@@ -1,26 +1,29 @@
 function reduceNormalize(key, values){
     
+    var norm = [];
     var max = 0;
     var min = 0;
-    values.forEach(function(val){
+    
+    var a = values.toString();
+    // Convert string to array
+    var b = a.split(',').map(function(item) {
+        return parseFloat(item);
+    });
+
+    // Get maximum
+    b.forEach(function(val){
         if(val > max) max = val;
     });
 
-    values.forEach(function(val){
+    // Get minimum
+    b.forEach(function(val){
         if(val > max) min = val;
     });
-
-    var norm = [];
-
-    values.forEach(function(val){
-        if(val != NaN){
-        
-        var normalized = (val-min)/(max-min);
+    
+    b.forEach(function(value){
+        var normalized = (value-min)/(max-min);
         norm.push(normalized);
-        }
-        else{
-            norm.push(-1);
-        }
     });
-    return {norm};
+    //They dont support to export as objects yet
+    return norm.toString();
 }

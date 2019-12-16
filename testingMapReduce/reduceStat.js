@@ -1,14 +1,20 @@
 function reduceStat(key, values){
 
-    var a = { sum: values[1], count:1, diff: 0, max: values[1], min: values[1]};
+    var a = values.toString();
+    // Convert string to array
+    var b = a.split(',').map(function(item) {
+        return parseFloat(item);
+    });
+
+    var a = { sum: b[1], count:1, diff: 0, max: b[1], min: b[1]};
     
-    for (var i = 2 ; i < values.length; i++){
+    for (var i = 2 ; i < b.length; i++){
         var val = { 
-            sum: values[i], 
+            sum: b[i], 
             count:1, 
             diff: 0,
-            max: values[i], 
-            min: values[i]};
+            max: b[i], 
+            min: b[i]};
 
         var delta = a.sum/a.count - val.sum/val.count; // a.mean - b.mean
         var weight = (a.count * val.count)/(a.count + val.count);

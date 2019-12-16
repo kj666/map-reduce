@@ -25,49 +25,17 @@ def uploadData(dataset, collection):
     col.insert_many(collect)
     print('Upload Completed Successfully')
 
+def mapRedu(reduceFunc, outputStr):
+    TimeI = datetime.now()
+    Value = col.map_reduce(mapf, reduceFunc,'out')
+    TimeF = datetime.now()
+    print('Time Elapsed : '+ str(TimeF -TimeI) +'\t\t'+outputStr+': ' + str(Value.find()[0]['value']))
 
 
 # myclient = pymongo.MongoClient("mongodb://76.67.179.162:27017/")
 myclient = pymongo.MongoClient("mongodb://192.168.2.14:27017/")
 mydb = myclient["hadoop"]
 col = mydb["MapReduceData"]
-
-#choose Dataset to work with
-while(True):
-    print('Select Data Set: \n1 - NDBench-Training\n2 - NDBench-Testing \n3 - Test Data')
-    datatype_in = input()
-    if(datatype_in == '1' or datatype_in == '2' or datatype_in == '3'):
-        break
-    
-if(datatype_in == '1'):
-    uploadData('NDBench-training.csv', col)
-elif(datatype_in == '2'):
-    uploadData('NDBench-testing.csv', col)
-elif(datatype_in == '3'):
-    uploadData('test.csv', col)
-
-
-# select attribute
-while(True):
-    print('Select Attribute: \n1 - CPUUtilization_Average\n2 - NetworkIn_Average\n3 - NetworkOut_Average\n4 - MemoryUtilization_Average')
-    attribute_in = input()
-    if(attribute_in =='1' or attribute_in =='2' or attribute_in =='3' or attribute_in =='4'):
-        break
-
-if(attribute_in == '1'):
-    mapf = Code(open('mapCPU.js', 'r').read())
-elif(attribute_in == '2'):
-    mapf = Code(open('mapNetworkIn.js', 'r').read())
-elif(attribute_in == '3'):
-    mapf = Code(open('mapNetworkOut.js', 'r').read())
-elif(attribute_in == '4'):
-    mapf = Code(open('mapMemory.js', 'r').read())
-
-def mapRedu(reduceFunc, outputStr):
-    TimeI = datetime.now()
-    Value = col.map_reduce(mapf, reduceFunc,'out')
-    TimeF = datetime.now()
-    print('Time Elapsed : '+ str(TimeF -TimeI) +'\t\t'+outputStr+': ' + str(Value.find()[0]['value']))
 
 
 reduceMin = Code(open('reduceMin.js', 'r').read())
@@ -79,25 +47,64 @@ reduceNormalize =  Code(open('reduceNorm.js', 'r').read())
 reducePercentile = Code(open('reducePercentile.js', 'r').read())
 finalizeStandard = Code(open('finalizeStandardDeviation.js', 'r').read())
 
-out = mydb["out"]
-
-mapRedu(reduceMin,'Min')
-mapRedu(reduceMax,'Max')
-mapRedu(reduceMedian,'Median')
-mapRedu(reduceAverage,'Average')
-
-stdDevTimeI = datetime.now()
-stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
-stdDevTimeF = datetime.now()
-print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
-
-mapRedu(reducePercentile,'90th percentile')
 
 while(True):
-    print('Do you want to normalize the data (y\\n)')
-    norm_in = input()
-    if(norm_in =='y' or norm_in =='n'):
-        if(norm_in =='y'):
-            normValue = col.map_reduce(mapf, reduceNormalize, 'out')
-            print('Normalized Values: ' + str(normValue.find()[0]['value']))
+#choose Dataset to work with
+    while(True):
+        print('Select Data Set: \n1 - NDBench-Training\n2 - NDBench-Testing \n3 - Test Data')
+        datatype_in = input()
+        if(datatype_in == '1' or datatype_in == '2' or datatype_in == '3'):
+            break
+        
+    if(datatype_in == '1'):
+        uploadData('NDBench-training.csv', col)
+    elif(datatype_in == '2'):
+        uploadData('NDBench-testing.csv', col)
+    elif(datatype_in == '3'):
+        uploadData('test.csv', col)
+
+
+    # select attribute
+    while(True):
+        print('Select Attribute: \n1 - CPUUtilization_Average\n2 - NetworkIn_Average\n3 - NetworkOut_Average\n4 - MemoryUtilization_Average')
+        attribute_in = input()
+        if(attribute_in =='1' or attribute_in =='2' or attribute_in =='3' or attribute_in =='4'):
+            break
+
+    if(attribute_in == '1'):
+        mapf = Code(open('mapCPU.js', 'r').read())
+    elif(attribute_in == '2'):
+        mapf = Code(open('mapNetworkIn.js', 'r').read())
+    elif(attribute_in == '3'):
+        mapf = Code(open('mapNetworkOut.js', 'r').read())
+    elif(attribute_in == '4'):
+        mapf = Code(open('mapMemory.js', 'r').read())
+
+
+
+    out = mydb["out"]
+
+    mapRedu(reduceMin,'Min')
+    mapRedu(reduceMax,'Max')
+    mapRedu(reduceMedian,'Median')
+    mapRedu(reduceAverage,'Average')
+
+    stdDevTimeI = datetime.now()
+    stantardValue = col.map_reduce(mapf, reduceStandard, finalize = finalizeStandard, out='out')
+    stdDevTimeF = datetime.now()
+    print('Time Elapsed : '+ str(stdDevTimeF -stdDevTimeI)+'\t\tStandard Deviation: ' + str(stantardValue.find()[0]['value']['standard_deviation']))
+
+    mapRedu(reducePercentile,'90th percentile')
+
+    while(True):
+        print('Do you want to normalize the data (y\\n)')
+        norm_in = input()
+        if(norm_in =='y' or norm_in =='n'):
+            if(norm_in =='y'):
+                normValue = col.map_reduce(mapf, reduceNormalize, 'out')
+                print('Normalized Values: ' + str(normValue.find()[0]['value']))
+            break
+    print('Press q to quit')
+    input_quit = input()
+    if(input_quit == 'q'):
         break

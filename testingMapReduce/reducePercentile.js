@@ -1,5 +1,10 @@
 function reducePercentile(key, values) {
-    const sorted = values.sort(function(a, b) {
+    var a = values.toString();
+    // Convert string to array
+    var b = a.split(',').map(function(item) {
+        return parseFloat(item);
+    });
+    const sorted = b.sort(function(a, b) {
         return a - b;
     });
     const pos = (sorted.length - 1) * 0.9;
